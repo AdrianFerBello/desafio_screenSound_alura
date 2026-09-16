@@ -1,0 +1,44 @@
+package com.example.ScreenSoundAlura.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "musica")
+public class Musica {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
+    private String titulo;
+
+    @ManyToOne
+    private Artista artista;
+
+    public Musica(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public Artista getArtista() {
+        return artista;
+    }
+
+    public void setArtista(Artista artista) {
+        this.artista = artista;
+    }
+}
