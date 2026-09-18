@@ -30,8 +30,6 @@ public class Artista {
     @OneToMany( mappedBy = "artista" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<Musica> musicas = new ArrayList<>();
 
-    public Artista(){}
-
     public Long getId() {
         return id;
     }
