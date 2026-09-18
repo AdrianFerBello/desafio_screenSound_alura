@@ -2,9 +2,13 @@ package com.example.ScreenSoundAlura.principal;
 
 import com.example.ScreenSoundAlura.model.Artista;
 import com.example.ScreenSoundAlura.model.GeneroMusical;
+import com.example.ScreenSoundAlura.model.Musica;
 import com.example.ScreenSoundAlura.model.TipoArtista;
 import com.example.ScreenSoundAlura.repository.ArtistaRepository;
+import com.example.ScreenSoundAlura.repository.MusicaRepository;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Principal {
@@ -13,10 +17,12 @@ public class Principal {
 
     Scanner leitor = new Scanner(System.in);
 
+    private MusicaRepository musicaRepository;
     private ArtistaRepository artistaRepository;
 
-    public Principal(ArtistaRepository artistaRepository){
+    public Principal(ArtistaRepository artistaRepository, MusicaRepository musicaRepository){
         this.artistaRepository = artistaRepository;
+        this.musicaRepository = musicaRepository;
     }
 
     public void exibirMenu(){
@@ -47,10 +53,10 @@ public class Principal {
                     consultarMusica();
                     break;
                 case 3:
-                    //listarMusicas();
+                    listarMusicas();
                     break;
                 case 4:
-                    //consultarMusicasPorArtista();
+                    consultarMusicasPorArtista();
                     break;
                 case 5:
                     //pesquisarDadosArtista();
@@ -65,8 +71,51 @@ public class Principal {
         }
     }
 
+    private void consultarMusicasPorArtista() {
+        leitor.nextLine();
+
+        System.out.println("Digite o nome do artista:");
+        var nome = leitor.nextLine();
+
+        List<Musica> musicas = musicaRepository.findByArtistaNomeContainingIgnoreCase(nome);
+
+        musicas.forEach(System.out::println);
+    }
+
+    private void listarMusicas() {
+        List<Musica> musicas = musicaRepository.findAll();
+        musicas.forEach(System.out::println);
+    }
+
     private void consultarMusica() {
-        System.out.println();
+        leitor.nextLine();
+
+        System.out.println("Musica de qual artista deseja cadastrar?");
+        var nome = leitor.nextLine();
+
+        Optional<Artista> artista = artistaRepository.findByNomeContainingIgnoreCase(nome);
+        if(artista.isPresent()){
+
+            System.out.println("Qual musica deseja cadastrar do artista " + nome + " ?");
+            var nomeMusica = leitor.nextLine();
+
+            Musica musica = new Musica(nomeMusica);
+            musica.setArtista(artista.get());
+            musica.setTitulo(nomeMusica);
+
+            musicaRepository.save(musica);
+
+        }else {
+
+            System.out.println("Artista nao encontrado no banco de dados, deseja cadastrar um? (S/N)");
+            char letra = leitor.next().charAt(0);
+
+            if (letra == 's' || letra == 'S'){
+                consultarArtista();
+            } else if (letra == 'n' || letra == 'N') {
+                System.out.println("Saindo....");
+            }
+        }
     }
 
     private void consultarArtista() {

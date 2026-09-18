@@ -17,6 +17,9 @@ public class Musica {
     private Artista artista;
 
     public Musica(){}
+    public Musica(String nomeMusica){
+        this.titulo = nomeMusica;
+    }
 
     public Long getId() {
         return id;
@@ -40,5 +43,14 @@ public class Musica {
 
     public void setArtista(Artista artista) {
         this.artista = artista;
+    }
+
+    @Override
+    public String toString() {
+        return "Musica{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", artista=" + artista.getNome() +
+                '}';
     }
 }
