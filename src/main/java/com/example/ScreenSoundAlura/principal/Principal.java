@@ -6,6 +6,7 @@ import com.example.ScreenSoundAlura.model.Musica;
 import com.example.ScreenSoundAlura.model.TipoArtista;
 import com.example.ScreenSoundAlura.repository.ArtistaRepository;
 import com.example.ScreenSoundAlura.repository.MusicaRepository;
+import com.example.ScreenSoundAlura.service.ConsultaChatGpt;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +60,7 @@ public class Principal {
                     consultarMusicasPorArtista();
                     break;
                 case 5:
-                    //pesquisarDadosArtista();
+                    pesquisarDadosArtista();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -69,6 +70,21 @@ public class Principal {
                     System.out.println("Opção Inválida!");
             }
         }
+    }
+
+    private void pesquisarDadosArtista() {
+
+        leitor.nextLine();
+
+        System.out.println("Digite o nome do artista:");
+        var nome = leitor.nextLine();
+
+        ConsultaChatGpt consulta = new ConsultaChatGpt();
+
+        String resposta = consulta.obterInformacoesArtista(nome);
+
+        System.out.println("\n===== INFORMAÇÕES SOBRE O ARTISTA =====");
+        System.out.println(resposta);
     }
 
     private void consultarMusicasPorArtista() {
